@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desa Mala — Profil Desa 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#132A2E;
+    --sea:#1E5C56;
+    --sea-light:#3E8377;
+    --nutmeg:#A44A22;
+    --gold:#D6A24A;
+    --sand:#EDE7D6;
+    --sand-2:#E2DAC2;
+    --paper:#F6F2E7;
+    --line: rgba(19,42,46,0.16);
+    --white:#FFFDF7;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces', serif;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:inherit;}
+
+  /* subtle chart-paper texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity:0.35;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+
+  /* ===== NAV ===== */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,242,231,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .navrow{
+    max-width:1120px; margin:0 auto; padding:14px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    flex-wrap:wrap;
+  }
+  .navbrand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:600; font-size:1.05rem;}
+  .navbrand .dot{width:10px;height:10px;border-radius:50%;background:var(--nutmeg);}
+  .navlinks{display:flex; gap:2px; flex-wrap:wrap; font-size:0.78rem;}
+  .navlinks a{
+    padding:7px 12px; border-radius:999px; text-decoration:none;
+    color:var(--sea); letter-spacing:0.02em; text-transform:uppercase; font-weight:600;
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem;
+  }
+  .navlinks a:hover{background:var(--sand-2);}
+
+  /* ===== HERO ===== */
+  header.hero{
+    position:relative; overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-inner{
+    max-width:1120px; margin:0 auto; padding:76px 28px 56px;
+    position:relative; z-index:2;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--sea); display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .eyebrow .rule{flex:1; height:1px; background:var(--line); max-width:70px;}
+  h1.title{
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    line-height:0.98; font-weight:600; margin:0 0 18px; letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  h1.title em{font-style:italic; color:var(--sea); font-weight:500;}
+  .hero-sub{
+    max-width:560px; font-size:1.05rem; line-height:1.6; color:#3B4C4A; margin-bottom:38px;
+  }
+  .coord{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--nutmeg);
+    letter-spacing:0.05em;
+  }
+
+  .hero-stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid var(--line); border-left:1px solid var(--line);
+    margin-top:10px;
+  }
+  .hstat{
+    border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:20px 18px;
+  }
+  .hstat .num{font-family:'Fraunces',serif; font-size:2.1rem; font-weight:600; color:var(--sea); line-height:1;}
+  .hstat .lbl{font-size:0.72rem; margin-top:8px; color:#5b6b68; text-transform:uppercase; letter-spacing:0.05em; font-family:'IBM Plex Mono',monospace;}
+
+  /* compass signature element */
+  .compass{
+    position:absolute; right:-60px; top:20px; width:420px; height:420px;
+    opacity:0.9; z-index:1; pointer-events:none;
+  }
+  @media (max-width:900px){ .compass{display:none;} }
+
+  /* ===== SECTION SCAFFOLD ===== */
+  section{padding:64px 0; border-bottom:1px solid var(--line); position:relative;}
+  .sec-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:24px;
+    margin-bottom:36px; flex-wrap:wrap;
+  }
+  .sec-tag{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--nutmeg);
+    text-transform:uppercase; letter-spacing:0.14em; margin-bottom:10px; display:block;
+  }
+  .sec-head h2{font-size:clamp(1.7rem,4vw,2.5rem); margin:0; font-weight:600; color:var(--ink);}
+  .sec-desc{max-width:440px; font-size:0.92rem; color:#4a5957; line-height:1.55;}
+
+  /* dusun legend strip — recurring device since every table splits by Dusun I/II/III */
+  .dusun-strip{display:flex; gap:8px; margin-top:14px;}
+  .dchip{
+    font-family:'IBM Plex Mono',monospace; font-size:0.66rem; padding:4px 9px; border-radius:3px;
+    border:1px solid var(--line); color:#5b6b68; display:flex; align-items:center; gap:6px;
+  }
+  .dchip i{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+  /* grid layouts */
+  .grid2{display:grid; grid-template-columns:1.1fr 0.9fr; gap:28px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:820px){ .grid2,.grid3,.grid4{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--white); border:1px solid var(--line); border-radius:6px;
+    padding:22px 22px 18px;
+  }
+  .card h3{font-size:1rem; margin:0 0 4px; font-weight:600;}
+  .card .cap{font-size:0.76rem; color:#6a7876; margin-bottom:14px; font-family:'IBM Plex Mono',monospace;}
+  .chartbox{position:relative; height:230px;}
+  .chartbox.short{height:180px;}
+
+  /* stat readouts */
+  .readout{
+    border:1px solid var(--line); border-radius:6px; background:var(--white);
+    padding:18px 20px;
+  }
+  .readout .num{font-family:'Fraunces',serif; font-weight:600; font-size:1.9rem; color:var(--nutmeg); line-height:1;}
+  .readout .lbl{font-size:0.74rem; color:#5b6b68; margin-top:6px;}
+
+  /* simple bar-list (ledger style) */
+  .ledger{border-top:1px solid var(--line);}
+  .ledger-row{
+    display:grid; grid-template-columns:150px 1fr 60px; align-items:center; gap:12px;
+    padding:9px 0; border-bottom:1px solid var(--line); font-size:0.85rem;
+  }
+  .ledger-row .name{font-weight:500;}
+  .ledger-row .val{font-family:'IBM Plex Mono',monospace; text-align:right; font-size:0.8rem; color:var(--sea);}
+  .bar-track{background:var(--sand-2); border-radius:3px; height:8px; overflow:hidden;}
+  .bar-fill{height:100%; background:var(--sea); border-radius:3px;}
+
+  table.datatable{width:100%; border-collapse:collapse; font-size:0.85rem;}
+  table.datatable th{
+    text-align:left; font-family:'IBM Plex Mono',monospace; font-size:0.68rem; text-transform:uppercase;
+    letter-spacing:0.04em; color:#5b6b68; padding:8px 10px; border-bottom:2px solid var(--ink);
+  }
+  table.datatable td{padding:9px 10px; border-bottom:1px solid var(--line);}
+  table.datatable tr:last-child td{font-weight:600; border-bottom:none; border-top:1px solid var(--ink);}
+  .source{font-size:0.7rem; color:#8b968f; font-family:'IBM Plex Mono',monospace; margin-top:10px;}
+
+  .pillrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+  .pill{
+    border:1px solid var(--line); border-radius:999px; padding:6px 14px; font-size:0.78rem;
+    background:var(--white); display:flex; align-items:center; gap:8px;
+  }
+  .pill b{color:var(--nutmeg);}
+
+  footer{padding:48px 0 60px; text-align:center;}
+  footer .brand{font-family:'Fraunces',serif; font-size:1.1rem; margin-bottom:6px;}
+  footer .fine{font-size:0.75rem; color:#7c8683; font-family:'IBM Plex Mono',monospace;}
+
+  ::selection{background:var(--gold); color:var(--ink);}
+
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+    .reveal.in{opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navrow">
+    <div class="navbrand"><span class="dot"></span> Desa Mala <span class="mono" style="font-size:0.7rem;color:#5b6b68;font-weight:400;">/ Profil 2026</span></div>
+    <div class="navlinks">
+      <a href="#geografi">Geografi</a>
+      <a href="#pemerintahan">Pemerintahan</a>
+      <a href="#penduduk">Penduduk</a>
+      <a href="#sosial">Sosial</a>
+      <a href="#ekonomi">Ekonomi</a>
+      <a href="#potensi">Potensi</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="compass" viewBox="0 0 400 400" fill="none">
+    <circle cx="200" cy="200" r="150" stroke="#1E5C56" stroke-width="1" opacity="0.35"/>
+    <circle cx="200" cy="200" r="110" stroke="#A44A22" stroke-width="1" opacity="0.3"/>
+    <circle cx="200" cy="200" r="70" stroke="#1E5C56" stroke-width="1" opacity="0.35"/>
+    <line x1="200" y1="20" x2="200" y2="380" stroke="#132A2E" stroke-width="0.6" opacity="0.25"/>
+    <line x1="20" y1="200" x2="380" y2="200" stroke="#132A2E" stroke-width="0.6" opacity="0.25"/>
+    <path d="M200 60 L212 200 L200 340 L188 200 Z" fill="#A44A22" opacity="0.85"/>
+    <path d="M60 200 L200 188 L340 200 L200 212 Z" fill="#1E5C56" opacity="0.55"/>
+    <text x="200" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#132A2E">U</text>
+    <text x="200" y="368" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#132A2E">S</text>
+    <text x="30" y="204" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#132A2E">B</text>
+    <text x="370" y="204" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#132A2E">T</text>
+  </svg>
+  <div class="hero-inner">
+    <div class="eyebrow">Kabupaten Kepulauan Talaud <span class="rule"></span> Kecamatan Melonguane</div>
+    <h1 class="title">Desa Mala,<br><em>dalam angka</em> 2026.</h1>
+    <p class="hero-sub">Potret geografis, kependudukan, dan sosial-ekonomi tiga dusun di Desa Mala — disusun dari data Kantor Desa Mala dan Tim Pembina Desa Cantik BPS Kabupaten Kepulauan Talaud.</p>
+    <div class="coord">04°09′ LU · 126°42′ BT (approx.) — Kepulauan Talaud, Sulawesi Utara</div>
+
+    <div class="hero-stats reveal">
+      <div class="hstat"><div class="num">506</div><div class="lbl">Jiwa penduduk</div></div>
+      <div class="hstat"><div class="num">9,9 km²</div><div class="lbl">Luas wilayah</div></div>
+      <div class="hstat"><div class="num">3</div><div class="lbl">Dusun / SLS</div></div>
+      <div class="hstat"><div class="num">115</div><div class="lbl">Keluarga berlistrik</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= GEOGRAFI ================= -->
+  <section id="geografi">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">01 — Keadaan Geografi</span>
+        <h2>Tiga dusun, 9,9 kilometer persegi.</h2>
+      </div>
+      <p class="sec-desc">Desa Mala terbagi menjadi Dusun I, II, dan III, masing-masing berjarak sekitar 3&nbsp;km dari ibu kota Kecamatan Melonguane.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Luas wilayah per dusun</h3>
+        <div class="cap">km² — 2026</div>
+        <div class="chartbox"><canvas id="chartLuas"></canvas></div>
+        <div class="source">Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+      <div class="card">
+        <h3>Jarak ke ibu kota kecamatan</h3>
+        <div class="cap">Melonguane</div>
+        <div class="ledger">
+          <div class="ledger-row"><span class="name">Dusun I</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="val">3 km</span></div>
+          <div class="ledger-row"><span class="name">Dusun II</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="val">3 km</span></div>
+          <div class="ledger-row"><span class="name">Dusun III</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="val">3 km</span></div>
+        </div>
+        <div class="source" style="margin-top:16px;">Sumber: Kecamatan Melonguane, 2026</div>
+        <h3 style="margin-top:22px;">Kondisi jalan antar-dusun</h3>
+        <p style="font-size:0.85rem; color:#4a5957; line-height:1.6;">Permukaan jalan seluruhnya <b>beraspal</b> dan dapat dilalui kendaraan roda empat atau lebih di ketiga dusun.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PEMERINTAHAN ================= -->
+  <section id="pemerintahan">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">02 — Pemerintahan &amp; SDM</span>
+        <h2>Perangkat &amp; aparatur desa.</h2>
+      </div>
+      <p class="sec-desc">Struktur pemerintahan Desa Mala dipimpin Kepala Desa Rony Misa bersama 10 perangkat desa yang membawahi tiga dusun.</p>
+    </div>
+
+    <div class="grid3" style="margin-bottom:24px;">
+      <div class="readout"><div class="num">Rony Misa</div><div class="lbl">Kepala Desa</div></div>
+      <div class="readout"><div class="num">Yasmin Pulu</div><div class="lbl">Sekretaris Desa</div></div>
+      <div class="readout"><div class="num">10 orang</div><div class="lbl">Total perangkat desa (4 laki-laki, 6 perempuan)</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Perangkat desa menurut jabatan</h3>
+        <div class="cap">Kepala Desa · Sekretaris · Kaur · Kasie · Kadus</div>
+        <div class="chartbox"><canvas id="chartPerangkat"></canvas></div>
+        <div class="source">Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+      <div class="card">
+        <h3>Pendidikan pegawai kantor desa</h3>
+        <div class="cap">11 orang — 3 laki-laki, 8 perempuan</div>
+        <div class="ledger">
+          <div class="ledger-row"><span class="name">SMA/Sederajat</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="val">9 org</span></div>
+          <div class="ledger-row"><span class="name">Sarjana/S1+</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><span class="val">2 org</span></div>
+        </div>
+        <div class="source" style="margin-top:16px;">Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PENDUDUK ================= -->
+  <section id="penduduk">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">03 — Kependudukan &amp; Ketenagakerjaan</span>
+        <h2>506 jiwa di tiga dusun.</h2>
+      </div>
+      <p class="sec-desc">Penduduk usia produktif (15–64 tahun) mendominasi struktur umur, dengan mata pencaharian terbanyak di luar sektor formal.</p>
+      <div class="dusun-strip">
+        <span class="dchip"><i style="background:#1E5C56"></i>Dusun I · 186 jiwa</span>
+        <span class="dchip"><i style="background:#3E8377"></i>Dusun II · 176 jiwa</span>
+        <span class="dchip"><i style="background:#A44A22"></i>Dusun III · 144 jiwa</span>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-bottom:24px;">
+      <div class="readout"><div class="num">262 / 244</div><div class="lbl">Laki-laki / Perempuan</div></div>
+      <div class="readout"><div class="num">356</div><div class="lbl">Usia produktif (15–64 th)</div></div>
+      <div class="readout"><div class="num">150</div><div class="lbl">Usia belum/tidak produktif (0–14 &amp; 65+)</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Penduduk menurut kelompok umur &amp; jenis kelamin</h3>
+        <div class="cap">jiwa — 2026</div>
+        <div class="chartbox"><canvas id="chartUmur"></canvas></div>
+        <div class="source">Sumber: Pemerintah Desa Mala, 2026</div>
+      </div>
+      <div class="card">
+        <h3>Penduduk bekerja menurut mata pencaharian</h3>
+        <div class="cap">Desa Mala — total 270 orang</div>
+        <div class="chartbox"><canvas id="chartKerja"></canvas></div>
+        <div class="source">Sumber: Desa Mala, 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOSIAL ================= -->
+  <section id="sosial">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">04 — Sosial &amp; Kesejahteraan Rakyat</span>
+        <h2>Pendidikan, kesehatan, dan keagamaan.</h2>
+      </div>
+      <p class="sec-desc">Fasilitas layanan dasar tersebar tipis di tiga dusun, ditopang oleh 11 tenaga kesehatan dan satu sekolah dasar.</p>
+    </div>
+
+    <div class="grid3" style="margin-bottom:24px;">
+      <div class="card">
+        <h3>Pendidikan</h3>
+        <div class="cap">Jumlah murid per jenjang, 2025/2026</div>
+        <table class="datatable">
+          <tr><th>Jenjang</th><th>Sekolah</th><th>Murid</th><th>Guru</th></tr>
+          <tr><td>SD</td><td>1</td><td>45</td><td>3</td></tr>
+          <tr><td>SMP</td><td>—</td><td>15</td><td>—</td></tr>
+          <tr><td>SMA</td><td>—</td><td>16</td><td>—</td></tr>
+        </table>
+        <div class="source">Sumber: Kantor Desa Mala, 2025/2026</div>
+      </div>
+
+      <div class="card">
+        <h3>Tenaga kesehatan</h3>
+        <div class="cap">orang — 2026</div>
+        <div class="chartbox short"><canvas id="chartKesehatan"></canvas></div>
+        <div class="source">1 Posyandu Maternal &amp; Anak · Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+
+      <div class="card">
+        <h3>Penduduk menurut agama</h3>
+        <div class="cap">jiwa — 506 total</div>
+        <div class="chartbox short"><canvas id="chartAgama"></canvas></div>
+        <div class="source">2 Gereja Protestan · Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+    </div>
+
+    <div class="pillrow">
+      <div class="pill">🏪 <b>1</b> toko &amp; <b>7</b> warung/kios</div>
+      <div class="pill">🍽️ <b>4</b> warung makan (Pariwisata)</div>
+      <div class="pill">⚡ <b>115</b> keluarga berlistrik (112 PLN)</div>
+    </div>
+  </section>
+
+  <!-- ================= EKONOMI ================= -->
+  <section id="ekonomi">
+    <div class="sec-head">
+      <div>
+        <span class="sec-tag">05 — Pertanian, Peternakan &amp; Perikanan</span>
+        <h2>Kelapa, cengkeh, pala — dan laut.</h2>
+      </div>
+      <p class="sec-desc">Perkebunan rakyat didominasi kelapa, sementara 30 rumah tangga menggantungkan hidup pada perikanan laut.</p>
+    </div>
+
+    <div class="grid2" style="margin-bottom:20px;">
+      <div class="card">
+        <h3>Populasi pohon perkebunan per dusun</h3>
+        <div class="cap">jumlah pohon — 2026</div>
+        <div class="chartbox"><canvas id="chartKebun"></canvas></div>
+        <div class="source">Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+      <div class="card">
+        <h3>Produksi perkebunan</h3>
+        <div class="cap">ton — 2026</div>
+        <div class="ledger">
+          <div class="ledger-row"><span class="name">Kelapa</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="val">4,2 ton</span></div>
+          <div class="ledger-row"><span class="name">Pala</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><span class="val">0,515 ton</span></div>
+          <div class="ledger-row"><span class="name">Cengkeh</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span class="val">0,135 ton</span></div>
+        </div>
+        <div class="source" style="margin-top:16px;">Sumber: Kantor Desa Mala, 2026</div>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="readout"><div class="num">30</div><div class="lbl">Rumah tangga perikanan laut (Dusun I·8 II·12 III·10)</div></div>
+      <div class="readout"><div class="num">30 ekor</div><div class="lbl">Populasi anjing — ternak besar (sapi/kambing/babi) belum ada</div></div>
+      <div class="readout"><div class="num">100 ekor</div><div cl
