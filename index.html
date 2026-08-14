@@ -6,7 +6,6 @@
 <title>Desa Mala — Profil Desa 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root{
     --ink:#132A2E;
@@ -153,6 +152,34 @@
   .chartbox{position:relative; height:230px;}
   .chartbox.short{height:180px;}
 
+  /* ===== CSS-only charts (no external JS library) ===== */
+  .vbars{display:flex; align-items:flex-end; justify-content:space-around; gap:14px; height:170px; padding-top:26px;}
+  .vcol{display:flex; flex-direction:column; align-items:center; flex:1; height:100%;}
+  .vgroup{display:flex; align-items:flex-end; gap:4px; height:100%; width:100%; justify-content:center;}
+  .vbar{width:20px; border-radius:3px 3px 0 0; position:relative; min-height:2px;}
+  .vgroup .vbar{width:14px;}
+  .vbar .vlabel{position:absolute; top:-18px; left:50%; transform:translateX(-50%); font-size:0.62rem; font-family:'IBM Plex Mono',monospace; white-space:nowrap; color:var(--ink);}
+  .vcol-label{margin-top:10px; font-size:0.7rem; font-family:'IBM Plex Mono',monospace; color:#5b6b68; text-align:center;}
+  .vchart-legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:16px; padding-top:12px; border-top:1px solid var(--line);}
+  .vl-item{display:flex; align-items:center; gap:6px; font-size:0.76rem; color:#4a5957;}
+  .vl-item i{width:9px; height:9px; border-radius:2px; display:inline-block;}
+
+  .hbars{display:flex; flex-direction:column; gap:12px;}
+  .hbar-row{display:grid; grid-template-columns:110px 1fr 50px; align-items:center; gap:10px;}
+  .hbar-row .name{font-size:0.82rem; font-weight:500;}
+  .hbar-track{background:var(--sand-2); border-radius:3px; height:10px; overflow:hidden;}
+  .hbar-fill{height:100%; border-radius:3px;}
+  .hbar-row .val{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; text-align:right; color:var(--sea);}
+
+  .donutwrap{display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .donut{width:150px; height:150px; border-radius:50%; position:relative; flex-shrink:0;}
+  .donut::after{content:""; position:absolute; inset:23%; background:var(--white); border-radius:50%;}
+  .donut-legend{flex:1; min-width:140px;}
+  .dl-row{display:flex; align-items:center; gap:8px; font-size:0.8rem; padding:6px 0; border-bottom:1px solid var(--line);}
+  .dl-row:last-child{border-bottom:none;}
+  .dl-row i{width:10px; height:10px; border-radius:2px; flex-shrink:0;}
+  .dl-row .v{margin-left:auto; font-family:'IBM Plex Mono',monospace; color:var(--sea); font-size:0.78rem;}
+
   /* stat readouts */
   .readout{
     border:1px solid var(--line); border-radius:6px; background:var(--white);
@@ -261,7 +288,11 @@
       <div class="card">
         <h3>Luas wilayah per dusun</h3>
         <div class="cap">km² — 2026</div>
-        <div class="chartbox"><canvas id="chartLuas"></canvas></div>
+        <div class="vbars">
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:100%; width:40px; background:#1E5C56;"><span class="vlabel">3,4</span></div></div><div class="vcol-label">Dusun I</div></div>
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:91.2%; width:40px; background:#3E8377;"><span class="vlabel">3,1</span></div></div><div class="vcol-label">Dusun II</div></div>
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:100%; width:40px; background:#A44A22;"><span class="vlabel">3,4</span></div></div><div class="vcol-label">Dusun III</div></div>
+        </div>
         <div class="source">Sumber: Kantor Desa Mala, 2026</div>
       </div>
       <div class="card">
@@ -299,7 +330,13 @@
       <div class="card">
         <h3>Perangkat desa menurut jabatan</h3>
         <div class="cap">Kepala Desa · Sekretaris · Kaur · Kasie · Kadus</div>
-        <div class="chartbox"><canvas id="chartPerangkat"></canvas></div>
+        <div class="hbars">
+          <div class="hbar-row"><span class="name">Kepala Desa</span><div class="hbar-track"><div class="hbar-fill" style="width:33%; background:#1E5C56;"></div></div><span class="val">1</span></div>
+          <div class="hbar-row"><span class="name">Sekretaris</span><div class="hbar-track"><div class="hbar-fill" style="width:33%; background:#1E5C56;"></div></div><span class="val">1</span></div>
+          <div class="hbar-row"><span class="name">Kaur</span><div class="hbar-track"><div class="hbar-fill" style="width:100%; background:#1E5C56;"></div></div><span class="val">3</span></div>
+          <div class="hbar-row"><span class="name">Kasie</span><div class="hbar-track"><div class="hbar-fill" style="width:100%; background:#1E5C56;"></div></div><span class="val">3</span></div>
+          <div class="hbar-row"><span class="name">Kadus</span><div class="hbar-track"><div class="hbar-fill" style="width:67%; background:#1E5C56;"></div></div><span class="val">2</span></div>
+        </div>
         <div class="source">Sumber: Kantor Desa Mala, 2026</div>
       </div>
       <div class="card">
@@ -335,97 +372,11 @@
       <div class="readout"><div class="num">150</div><div class="lbl">Usia belum/tidak produktif (0–14 &amp; 65+)</div></div>
     </div>
 
-    <div class="grid2">
-      <div class="card">
-        <h3>Penduduk menurut kelompok umur &amp; jenis kelamin</h3>
-        <div class="cap">jiwa — 2026</div>
-        <div class="chartbox"><canvas id="chartUmur"></canvas></div>
-        <div class="source">Sumber: Pemerintah Desa Mala, 2026</div>
-      </div>
-      <div class="card">
-        <h3>Penduduk bekerja menurut mata pencaharian</h3>
-        <div class="cap">Desa Mala — total 270 orang</div>
-        <div class="chartbox"><canvas id="chartKerja"></canvas></div>
-        <div class="source">Sumber: Desa Mala, 2026</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= SOSIAL ================= -->
-  <section id="sosial">
-    <div class="sec-head">
-      <div>
-        <span class="sec-tag">04 — Sosial &amp; Kesejahteraan Rakyat</span>
-        <h2>Pendidikan, kesehatan, dan keagamaan.</h2>
-      </div>
-      <p class="sec-desc">Fasilitas layanan dasar tersebar tipis di tiga dusun, ditopang oleh 11 tenaga kesehatan dan satu sekolah dasar.</p>
-    </div>
-
-    <div class="grid3" style="margin-bottom:24px;">
-      <div class="card">
-        <h3>Pendidikan</h3>
-        <div class="cap">Jumlah murid per jenjang, 2025/2026</div>
-        <table class="datatable">
-          <tr><th>Jenjang</th><th>Sekolah</th><th>Murid</th><th>Guru</th></tr>
-          <tr><td>SD</td><td>1</td><td>45</td><td>3</td></tr>
-          <tr><td>SMP</td><td>—</td><td>15</td><td>—</td></tr>
-          <tr><td>SMA</td><td>—</td><td>16</td><td>—</td></tr>
-        </table>
-        <div class="source">Sumber: Kantor Desa Mala, 2025/2026</div>
-      </div>
-
-      <div class="card">
-        <h3>Tenaga kesehatan</h3>
-        <div class="cap">orang — 2026</div>
-        <div class="chartbox short"><canvas id="chartKesehatan"></canvas></div>
-        <div class="source">1 Posyandu Maternal &amp; Anak · Sumber: Kantor Desa Mala, 2026</div>
-      </div>
-
-      <div class="card">
-        <h3>Penduduk menurut agama</h3>
-        <div class="cap">jiwa — 506 total</div>
-        <div class="chartbox short"><canvas id="chartAgama"></canvas></div>
-        <div class="source">2 Gereja Protestan · Sumber: Kantor Desa Mala, 2026</div>
-      </div>
-    </div>
-
-    <div class="pillrow">
-      <div class="pill">🏪 <b>1</b> toko &amp; <b>7</b> warung/kios</div>
-      <div class="pill">🍽️ <b>4</b> warung makan (Pariwisata)</div>
-      <div class="pill">⚡ <b>115</b> keluarga berlistrik (112 PLN)</div>
-    </div>
-  </section>
-
-  <!-- ================= EKONOMI ================= -->
-  <section id="ekonomi">
-    <div class="sec-head">
-      <div>
-        <span class="sec-tag">05 — Pertanian, Peternakan &amp; Perikanan</span>
-        <h2>Kelapa, cengkeh, pala — dan laut.</h2>
-      </div>
-      <p class="sec-desc">Perkebunan rakyat didominasi kelapa, sementara 30 rumah tangga menggantungkan hidup pada perikanan laut.</p>
-    </div>
-
     <div class="grid2" style="margin-bottom:20px;">
       <div class="card">
-        <h3>Populasi pohon perkebunan per dusun</h3>
-        <div class="cap">jumlah pohon — 2026</div>
-        <div class="chartbox"><canvas id="chartKebun"></canvas></div>
-        <div class="source">Sumber: Kantor Desa Mala, 2026</div>
-      </div>
-      <div class="card">
-        <h3>Produksi perkebunan</h3>
-        <div class="cap">ton — 2026</div>
-        <div class="ledger">
-          <div class="ledger-row"><span class="name">Kelapa</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="val">4,2 ton</span></div>
-          <div class="ledger-row"><span class="name">Pala</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><span class="val">0,515 ton</span></div>
-          <div class="ledger-row"><span class="name">Cengkeh</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span class="val">0,135 ton</span></div>
-        </div>
-        <div class="source" style="margin-top:16px;">Sumber: Kantor Desa Mala, 2026</div>
-      </div>
-    </div>
-
-    <div class="grid3">
-      <div class="readout"><div class="num">30</div><div class="lbl">Rumah tangga perikanan laut (Dusun I·8 II·12 III·10)</div></div>
-      <div class="readout"><div class="num">30 ekor</div><div class="lbl">Populasi anjing — ternak besar (sapi/kambing/babi) belum ada</div></div>
-      <div class="readout"><div class="num">100 ekor</div><div cl
+        <h3>Jumlah penduduk per dusun</h3>
+        <div class="cap">jiwa — 2026</div>
+        <div class="vbars">
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:100%; width:40px; background:#1E5C56;"><span class="vlabel">186</span></div></div><div class="vcol-label">Dusun I</div></div>
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:94.6%; width:40px; background:#3E8377;"><span class="vlabel">176</span></div></div><div class="vcol-label">Dusun II</div></div>
+          <div class="vcol"><div class="vgroup"><div class="vbar" style="height:77.4%; width:40px; background:#A44A22;"><span class="vl
