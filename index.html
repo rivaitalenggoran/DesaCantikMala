@@ -180,33 +180,6 @@
   .dl-row i{width:10px; height:10px; border-radius:2px; flex-shrink:0;}
   .dl-row .v{margin-left:auto; font-family:'IBM Plex Mono',monospace; color:var(--sea); font-size:0.78rem;}
 
-  /* ===== Org tree (pure CSS, no library, wraps — no horizontal scroll) ===== */
-  .orgtree{padding:6px 0 8px; display:flex; flex-direction:column; align-items:center;}
-  .ot-node{border:1px solid var(--line); border-radius:6px; background:var(--white); padding:10px 14px; min-width:140px; text-align:center;}
-  .ot-node .role{font-size:0.6rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--nutmeg); font-family:'IBM Plex Mono',monospace; white-space:nowrap;}
-  .ot-node .nm{font-family:'Fraunces',serif; font-weight:600; font-size:0.9rem; margin-top:3px; white-space:nowrap;}
-  .ot-node.root{background:var(--sea); border-color:var(--sea);}
-  .ot-node.root .role{color:var(--gold);}
-  .ot-node.root .nm{color:var(--white); font-size:1.05rem;}
-  .ot-node.branch{background:var(--sand); min-width:0; padding:8px 12px;}
-  .ot-node.branch .nm{font-size:0.82rem;}
-  .ot-stem{width:1px; height:22px; background:var(--sea-light);}
-  .ot-row{display:flex; flex-wrap:wrap; justify-content:center; gap:26px 22px; position:relative; padding-top:22px; margin-top:1px;}
-  .ot-row::before{content:''; position:absolute; top:0; left:14%; right:14%; height:1px; background:var(--sea-light);}
-  .ot-branch{display:flex; flex-direction:column; align-items:center; position:relative;}
-  .ot-branch::before{content:''; position:absolute; top:-22px; left:50%; width:1px; height:22px; background:var(--sea-light); transform:translateX(-50%);}
-  .ot-sub{margin-top:20px; padding:14px 14px 2px; border:1px dashed var(--line); border-radius:8px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px 12px; max-width:420px; position:relative;}
-  .ot-sub::before{content:''; position:absolute; top:-20px; left:50%; width:1px; height:20px; background:var(--sea-light); transform:translateX(-50%);}
-  .ot-sub-label{font-size:0.6rem; font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.05em; color:#8b968f; width:100%; text-align:center; margin-bottom:2px;}
-  @media (max-width:640px){
-    .ot-row::before{display:none;}
-    .ot-row{flex-direction:column; gap:0; padding-top:0; position:relative;}
-    .ot-row::after{content:''; position:absolute; top:0; bottom:20px; left:50%; width:1px; background:var(--sea-light); transform:translateX(-50%); z-index:0;}
-    .ot-branch{padding:14px 0; position:relative; z-index:1;}
-    .ot-branch::before{display:none;}
-    .ot-sub::before{display:none;}
-    .ot-sub{margin-top:12px;}
-  }
 
 
   /* stat readouts */
@@ -355,44 +328,28 @@
       <div class="readout"><div class="num">10 orang</div><div class="lbl">Total perangkat desa (4 laki-laki, 6 perempuan)</div></div>
     </div>
 
-    <div class="card" style="margin-bottom:20px;">
-      <h3>Struktur organisasi Pemerintah Desa Mala</h3>
-      <div class="cap">2026</div>
-      <div class="orgtree">
-        <div class="ot-node root"><div class="role">Kepala Desa</div><div class="nm">Rony Misa</div></div>
-        <div class="ot-stem"></div>
-        <div class="ot-row">
-          <div class="ot-branch">
-            <div class="ot-node"><div class="role">Sekretaris Desa</div><div class="nm">Yasmin Pulu</div></div>
-            <div class="ot-sub">
-              <div class="ot-sub-label">Kaur &amp; Kasie</div>
-              <div class="ot-node branch"><div class="role">Kaur Keuangan</div><div class="nm">Risna Kadirarif</div></div>
-              <div class="ot-node branch"><div class="role">Kaur Perencanaan</div><div class="nm">Fenny Panauhe</div></div>
-              <div class="ot-node branch"><div class="role">Kaur Umum</div><div class="nm">Jenly Pangumpia</div></div>
-              <div class="ot-node branch"><div class="role">Kasie Pemerintahan</div><div class="nm">Greis Tabaru</div></div>
-              <div class="ot-node branch"><div class="role">Kasie Kesejahteraan</div><div class="nm">Jandri Asale</div></div>
-              <div class="ot-node branch"><div class="role">Kasie Pelayanan</div><div class="nm">Fadli Misah</div></div>
-            </div>
-          </div>
-          <div class="ot-branch">
-            <div class="ot-node"><div class="role">Kadus I</div><div class="nm">Simpon Ihumapi</div></div>
-          </div>
-          <div class="ot-branch">
-            <div class="ot-node"><div class="role">Kadus II</div><div class="nm">Marlin Lena</div></div>
-          </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Perangkat desa menurut jabatan</h3>
+        <div class="cap">Kepala Desa · Sekretaris · Kaur · Kasie · Kadus</div>
+        <div class="hbars">
+          <div class="hbar-row"><span class="name">Kepala Desa</span><div class="hbar-track"><div class="hbar-fill" style="width:33%; background:#1E5C56;"></div></div><span class="val">1</span></div>
+          <div class="hbar-row"><span class="name">Sekretaris</span><div class="hbar-track"><div class="hbar-fill" style="width:33%; background:#1E5C56;"></div></div><span class="val">1</span></div>
+          <div class="hbar-row"><span class="name">Kaur</span><div class="hbar-track"><div class="hbar-fill" style="width:100%; background:#1E5C56;"></div></div><span class="val">3</span></div>
+          <div class="hbar-row"><span class="name">Kasie</span><div class="hbar-track"><div class="hbar-fill" style="width:100%; background:#1E5C56;"></div></div><span class="val">3</span></div>
+          <div class="hbar-row"><span class="name">Kadus</span><div class="hbar-track"><div class="hbar-fill" style="width:67%; background:#1E5C56;"></div></div><span class="val">2</span></div>
         </div>
+        <div class="source">Sumber: Kantor Desa Mala, 2026</div>
       </div>
-      <div class="source">Sumber: Kantor Desa Mala, 2026</div>
-    </div>
-
-    <div class="card">
-      <h3>Pendidikan pegawai kantor desa</h3>
-      <div class="cap">11 orang — 3 laki-laki, 8 perempuan</div>
-      <div class="ledger">
-        <div class="ledger-row"><span class="name">SMA/Sederajat</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="val">9 org</span></div>
-        <div class="ledger-row"><span class="name">Sarjana/S1+</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><span class="val">2 org</span></div>
+      <div class="card">
+        <h3>Pendidikan pegawai kantor desa</h3>
+        <div class="cap">11 orang — 3 laki-laki, 8 perempuan</div>
+        <div class="ledger">
+          <div class="ledger-row"><span class="name">SMA/Sederajat</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="val">9 org</span></div>
+          <div class="ledger-row"><span class="name">Sarjana/S1+</span><div class="bar-track"><div class="bar-fill" style="width:18%"></div></div><span class="val">2 org</span></div>
+        </div>
+        <div class="source" style="margin-top:16px;">Sumber: Kantor Desa Mala, 2026</div>
       </div>
-      <div class="source" style="margin-top:16px;">Sumber: Kantor Desa Mala, 2026</div>
     </div>
   </section>
 
